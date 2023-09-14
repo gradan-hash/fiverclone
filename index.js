@@ -37,6 +37,14 @@ app.use("/api/review", reviewRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/conversation", conversationRoute);
 
+
+app.use((req,res,next)=>{
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "something went wrong";
+
+  return res.status(errorStatus).send(errorMessage)
+});
+
 app.listen(4000, () => {
   connect();
   console.log("backend running");
