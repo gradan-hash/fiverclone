@@ -1,11 +1,11 @@
 import express from "express";
 import user from "../models/user.model.js";
-
-export const deleteUser = async (req, res) => {
+import createError from "../utils/createError.js";
+export const deleteUser = async (req, res, next) => {
   const User = await user.findById(req.params.id);
 
   if (req.userId !== User._id.toString()) {
-    return res.status(403).send("you can delete yor account only");
+    return next(createError(403, "you can delete yor account only"));
   }
 
   await user.findByIdAndDelete(req.params.id);

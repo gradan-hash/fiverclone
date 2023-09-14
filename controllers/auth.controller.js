@@ -2,6 +2,7 @@ import express from "express";
 import user from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import createError from "../utils/createError.js";
 
 export const register = async (req, res, next) => {
   try {
@@ -22,12 +23,10 @@ export const login = async (req, res, next) => {
   try {
     const User = await user.findOne({ username: req.body.username });
 
-    const err = 404;
-    err.message = "user not found";
-    if (!User) return next(err);
+    if (!User) return next(createError(404, "user not found"));
 
     const isCorrect = bcrypt.compareSync(req.body.password, User.password);
-    if (!isCorrect) return res.status(400).send("wrong password or username");
+    if (!isCorrect) return next(createError(400, "wrong password or username"));
 
     const token = jwt.sign(
       {
@@ -46,7 +45,7 @@ export const login = async (req, res, next) => {
       .status(200)
       .send(info);
   } catch (err) {
-    res.status(500).send("something went wrong");
+    next(err);
   }
 };
 

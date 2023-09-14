@@ -1,13 +1,16 @@
 import jwt from "jsonwebtoken";
+import createError from "../utils/createError.js";
 
-export const VerifyToken = (req, res) => {
+export const VerifyToken = (req, res, next) => {
   const token = req.cookies.accessToken;
 
-  if (!token) return res.status(401).send("youre not aunthenticated");
+  if (!token) return next(createError(401, "youre not aunthenticated"));
 
   jwt.verify(token, process.env.JWT_KEY, (err, payload) => {
-    if (err) return res.status(403).send("Token not valid");
+    if (err) return next(createError(403, "Token not valid"));
+
     req.userId = payload.id;
     req.isSeller = payload.isSeller;
+    next()
   });
 };
