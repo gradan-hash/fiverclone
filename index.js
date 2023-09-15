@@ -38,7 +38,7 @@ app.use("/api/order", orderRoute);
 app.use("/api/conversation", conversationRoute);
 
 
-app.use((req,res,next)=>{
+app.use((req,res,next,err)=>{
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "something went wrong";
 
