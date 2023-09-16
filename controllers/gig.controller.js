@@ -19,13 +19,38 @@ export const createGig = async (req, res, next) => {
   }
 };
 
-export const geteGig = (req, res, next) => {};
-export const singleGig = (req, res, next) => {};
-
-export const deleteGig =await (req, res, next) => {
+export const geteGig = async (req, res, next) => {
+  const query = req.query;
+  const filters = {
+    cat: query.category,
+    price: { $gt: 100 },
+    title: { $regex: query.search, $option: "i" },
+  };
   try {
-    const gig = await Gig.findById(req.params.id)
-    if(gig.userId !=req.userId)return next(createError(403,"you can only delete yout gig sorry buddy"))
+    const gig = await Gig.find(filters);
+    res.status(200).json(gig);
+  } catch (error) {}
+};
+
+export const singleGig = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig) return next(createError(404, "gig not found"));
+    res.status(200).send(gig);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteGig = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+
+    if (gig.userId != req.userId)
+      return next(createError(403, "you can only delete yout gig sorry buddy"));
+
+    await Gig.findByIdAndDelete(req.params.id);
+    res.status(200).send("Gig has been deleted");
   } catch (err) {
     next(err);
   }
