@@ -61,11 +61,11 @@ const gigScheme = new Schema(
     },
     sales: {
       type: Number,
-      required,
+      required: false,
     },
   },
 
   { timestamps: true }
 );
 
-export default mongoose.model("User", gigScheme);
+export default mongoose.model("Gig", gigScheme);
