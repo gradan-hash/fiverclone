@@ -22,9 +22,17 @@ export const createGig = async (req, res, next) => {
 export const geteGig = async (req, res, next) => {
   const query = req.query;
   const filters = {
-    cat: query.category,
-    price: { $gt: 100 },
-    title: { $regex: query.search, $option: "i" },
+    ...(query.userId && { userId: query.userId }),
+    ...(query.category && { cat: query.category }),
+
+    ...((query.min || query.max) && {
+      price: {
+        ...(query.min && { $gt: query.min }),
+        ...(query.max && { $lt: query.max }),
+      },
+    }),
+
+    ...(query.search && { title: { $regex: query.search, $options: "i" } }),
   };
   try {
     const gig = await Gig.find(filters);
