@@ -23,6 +23,7 @@ export const geteGig = async (req, res, next) => {
   const query = req.query;
   const filters = {
     ...(query.userId && { userId: query.userId }),
+
     ...(query.category && { cat: query.category }),
 
     ...((query.min || query.max) && {
@@ -35,7 +36,8 @@ export const geteGig = async (req, res, next) => {
     ...(query.search && { title: { $regex: query.search, $options: "i" } }),
   };
   try {
-    const gig = await Gig.find(filters);
+    const gig = await Gig.find(filters).sort({ [query.sort]: -1 });
+
     res.status(200).json(gig);
   } catch (error) {}
 };
