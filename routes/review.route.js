@@ -9,7 +9,7 @@ import { VerifyToken } from "../middleware/jwt.js";
 const router = express.Router();
 
 router.post("/", VerifyToken, createReview);
-router.get("/:id", VerifyToken, getReviews);
+router.get("/:gigId", VerifyToken, getReviews);
 router.delete("/:id", VerifyToken, deleteReview);
 
 export default router;

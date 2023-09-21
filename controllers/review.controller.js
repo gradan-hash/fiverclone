@@ -4,7 +4,8 @@ import Review from "../models/review.model.js";
 import Gig from "../models/gig.model.js";
 
 export const createReview = async (req, res, next) => {
-  if (req.isSeller) return next(createError("sellers cannot create a review"));
+  if (req.isSeller)
+    return next(createError(400, "sellers cannot create a review"));
 
   const newGig = new Review({
     userId: req.userId,
@@ -19,7 +20,7 @@ export const createReview = async (req, res, next) => {
       userId: req.userId,
     });
 
-    if (review) return next(createError("already created"));
+    if (review) return next(createError(400, "already created"));
 
     await Gig.findByIdAndUpdate(req.body.gigId, {
       $inc: { totalStars: req.body.star, starNumber: 1 },
@@ -35,10 +36,10 @@ export const createReview = async (req, res, next) => {
 export const getReviews = async (req, res) => {
   try {
     const reviews = await Review.find({
-      gigId: req.body.gigId,
+      gigId: req.params.gigId,
     });
 
-    res.status(201).send(reviews);
+    res.status(200).send(reviews);
   } catch (err) {
     next(err);
   }

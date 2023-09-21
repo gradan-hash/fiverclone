@@ -14,7 +14,7 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const getUser = async (req, res, next) => {
-  const User = await user.findById(req.params.id);
+  const User = await user.findById(req.params.useId);
 
   res.status(200).json(User);
 };
