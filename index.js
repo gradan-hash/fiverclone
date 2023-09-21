@@ -31,7 +31,7 @@ app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/gigs", gigRoute);
-app.use("/api/review", reviewRoute);
+app.use("/api/reviews", reviewRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/conversation", conversationRoute);
 

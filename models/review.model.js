@@ -3,23 +3,23 @@ const { Schema } = mongoose;
 
 const reviewSchema = new Schema(
   {
-    gigiD:{
+    gigId: {
       type: String,
-      required : true
+      required: true,
     },
-    userId:{
+    userId: {
       type: String,
-      required : true
+      required: true,
     },
-     star:{
+    star: {
       type: String,
-      required : true,
-      enum: [1,2,3,4,5]
+      required: true,
+      enum: [1, 2, 3, 4, 5],
     },
-     
-     desc:{
+
+    desc: {
       type: String,
-      required : true
+      required: true,
     },
   },
   { timestamps: true }
