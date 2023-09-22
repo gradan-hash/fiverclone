@@ -1,15 +1,36 @@
 import express from "express";
 import Order from "../models/order.model.js";
 import createError from "../utils/createError.js";
-export const creteOrder = (req, res, next) => {
+import Gig from "../models/gig.model.js";
+
+export const creteOrder = async (req, res, next) => {
   try {
-    const newOrder = 
+    const gig = await Gig.findById(req.params.gigId);
+    const newOrder = new Order({
+      gigId: gig._id,
+      img: gig.cover,
+      title: gig.title,
+      buyerId: req.userId,
+      sellerId: gig.userId,
+      price: gig.price,
+      payment_intent: "temporarystring",
+    });
+    await newOrder.save();
+    res.status(200).send("successfull");
   } catch (err) {
     next(err);
   }
 };
 
-export const getOrders = (req, res) => {
+export const getOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find({
+      ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
+      isCompleted: true,
+    });
+  } catch (err) {
+    next(err);
+  }
   //
   res.send("fuck off");
 };
