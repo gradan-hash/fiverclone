@@ -1,8 +1,11 @@
 import express from "express";
-import {} from "../controllers/user.controller.js";
+import {creteOrder,getOrders} from "../controllers/order.controller.js";
+import { VerifyToken } from "../middleware/jwt.js";
 
 const router = express.Router();
 
-router.get("/test", );
+router.post("/", VerifyToken, creteOrder);
+router.get("/all", VerifyToken, getOrders);
+
 
 export default router;
