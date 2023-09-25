@@ -9,7 +9,7 @@ export const createConversation = async (req, res, next) => {
     sellerId: req.isSeller ? req.userId : req.body.to,
     buyerId: req.isSeller ? req.body.to : req.userId,
     readByseller: req.isSeller,
-    readByBuyer: !req.isSeller,
+    readBybuyer: !req.isSeller,
   });
   try {
     const SavedConvesation = await newConversation.save();
