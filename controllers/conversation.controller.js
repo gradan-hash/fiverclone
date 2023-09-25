@@ -39,21 +39,23 @@ export const getsingleConversation = async (req, res, next) => {
     next(err);
   }
 };
+
 export const updateConversation = async (req, res, next) => {
   try {
+    const updateData = req.isSeller
+      ? { readByseller: true }
+      : { readBybuyer: true };
+
     const UpdatedConversation = await Conversation.findByIdAndUpdate(
       {
         id: req.params.id,
       },
       {
-        $set: {
-          readBybuyer: !req.isSeller,
-          readByseller: req.isSeller,
-        },
+        $set: updateData,
       },
       { new: true }
     );
-    res.status(200).send(updateConversation);
+    res.status(200).send(UpdatedConversation);
   } catch (err) {
     next(err);
   }
