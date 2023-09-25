@@ -31,4 +31,4 @@ const conversationSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("conversation", conversationSchema);
+export default mongoose.model("Conversation", conversationSchema);
