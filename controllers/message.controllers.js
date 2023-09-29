@@ -1,14 +1,26 @@
 import express from "express";
-import Order from "../models/order.model.js";
+import Message from "../models/message.model.js";
 import createError from "../utils/createError.js";
-export const creteOrder = (req, res, next) => {
+
+export const createMessage = (req, res, next) => {
   try {
+    const newMessage = new Message({
+      conversationId: req.body.conversationId,
+      userId: req.userId,
+      desc: req.body.desc,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const getOrders = (req, res) => {
-  //
-  res.send("fuck off");
+export const getMessage = async (req, res, next) => {
+  try {
+    const message = await Message.find({
+      conversationId: req.params.id,
+    });
+    res.status(200).send(message);
+  } catch (err) {
+    next(err);
+  }
 };

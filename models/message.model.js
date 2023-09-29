@@ -7,7 +7,7 @@ const messageSchema = new Schema(
       type: String,
       required: true,
     },
-    UserId: {
+    userId: {
       type: String,
       required: true,
     },
@@ -19,4 +19,4 @@ const messageSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("message", messageSchema);
+export default mongoose.model("Message", messageSchema);
